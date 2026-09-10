@@ -17,7 +17,7 @@ public class ErrorConfig implements ErrorViewResolver {
         } else if (status == HttpStatus.FORBIDDEN) {
             return new ModelAndView("error/403", model);
         } else if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
-            return new ModelAndView("error/500", model);
+            return new ModelAndView("error/error", model);
         }
         return new ModelAndView("error/error", model);
     }
