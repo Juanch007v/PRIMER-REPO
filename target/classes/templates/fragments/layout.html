@@ -100,7 +100,7 @@
                 <span>Inicio</span>
             </a>
 
-            <!-- Catálogo y Stock (Desplegable) -->
+            <!-- Inventario (Desplegable) -->
             <div class="space-y-1">
                 <button type="button" onclick="toggleSubmenu('submenu-inventario')"
                         class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white transition-colors duration-200 group focus:outline-none cursor-pointer">
@@ -110,7 +110,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                             </svg>
                         </div>
-                        <span>Catálogo y Stock</span>
+                        <span>Inventario</span>
                     </div>
                     <svg id="arrow-inventario" class="w-3 h-3 transition-transform duration-300 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
@@ -124,16 +124,16 @@
                     </a>
                     <a th:href="@{/view/lotes}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Control de Lotes e Inventario
+                        Lotes e Inventario
                     </a>
                     <a th:href="@{/view/vencimientos}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Alertas de Vencimiento
+                        Vencimientos
                     </a>
                 </div>
             </div>
 
-            <!-- Dispensación / POS (Desplegable) -->
+            <!-- Ventas (Desplegable) -->
             <div class="space-y-1">
                 <button type="button" onclick="toggleSubmenu('submenu-dispensacion')"
                         class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white transition-colors duration-200 group focus:outline-none cursor-pointer">
@@ -143,7 +143,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
                             </svg>
                         </div>
-                        <span>Dispensación / POS</span>
+                        <span>Ventas</span>
                     </div>
                     <svg id="arrow-dispensacion" class="w-3 h-3 transition-transform duration-300 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
@@ -153,11 +153,11 @@
                 <div id="submenu-dispensacion" class="submenu-container pl-4 space-y-1 pt-1 border-l border-white/10 ml-5 my-1" style="max-height:0px;overflow:hidden;opacity:0;">
                     <a th:href="@{/view/ventas/nueva}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Nueva Venta / Facturación
+                        Nueva Venta
                     </a>
                     <a th:href="@{/view/dispensacion/historial}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Historial de Dispensación
+                        Historial de Ventas
                     </a>
                 </div>
             </div>
@@ -182,11 +182,11 @@
                 <div id="submenu-proveedores" class="submenu-container pl-4 space-y-1 pt-1 border-l border-white/10 ml-5 my-1" style="max-height:0px;overflow:hidden;opacity:0;">
                     <a th:href="@{/view/proveedores}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Directorio de Proveedores
+                        Directorio
                     </a>
                     <a th:href="@{/view/ordenes-compra}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Órdenes de Compra
+                        Compras
                     </a>
                 </div>
             </div>
@@ -203,7 +203,7 @@
                 <span>Pacientes</span>
             </a>
 
-            <!-- Usuarios y Personal (Desplegable actualizado con Empleados, Usuarios y Roles) -->
+            <!-- Personal (Desplegable actualizado con Empleados, Usuarios y Roles) -->
             <div class="space-y-1">
                 <button type="button" onclick="toggleSubmenu('submenu-empleados')"
                         class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white transition-colors duration-200 group focus:outline-none cursor-pointer">
@@ -213,7 +213,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                             </svg>
                         </div>
-                        <span>Usuarios y Personal</span>
+                        <span>Personal</span>
                     </div>
                     <svg id="arrow-empleados" class="w-3 h-3 transition-transform duration-300 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
@@ -269,7 +269,7 @@
                 <div id="submenu-config" class="submenu-container pl-4 space-y-1 pt-1 border-l border-white/10 ml-5 my-1" style="max-height:0px;overflow:hidden;opacity:0;">
 <a th:href="@{/view/configuracion}"
                        class="block px-3 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer">
-                        Impuestos / Métodos de Pago
+                        Pagos e Impuestos
                     </a>
                 </div>
             </div>
