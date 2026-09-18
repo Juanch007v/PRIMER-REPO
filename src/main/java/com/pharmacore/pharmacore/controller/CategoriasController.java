@@ -21,20 +21,23 @@ public class CategoriasController
     }
 
     @GetMapping("/{id}")
-    public Categorias getById(@PathVariable Integer id)
+    public Categorias getById(@PathVariable Long id)
     {
         return categoriasRepository.findById(id).orElse(null);
     }
 
     @PutMapping("/{id}")
-    public Categorias update(@PathVariable Integer id, @RequestBody Categorias categorias)
+    public Categorias update(@PathVariable Long id, @RequestBody Categorias categorias)
     {
-        categorias.setId(id);
+        if (!categoriasRepository.existsById(id)) {
+            throw new java.util.NoSuchElementException("La categoría #" + id + " no existe.");
+        }
+        categorias.setId_categoria(id);
         return categoriasRepository.save(categorias);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id)
+    public void delete(@PathVariable Long id)
     {
         categoriasRepository.deleteById(id);
     }

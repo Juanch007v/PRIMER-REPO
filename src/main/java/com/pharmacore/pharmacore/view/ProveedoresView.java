@@ -33,10 +33,10 @@ public class ProveedoresView {
 
     // GUARDAR
     @PostMapping("/view/proveedores/save")
-    public String save(@Valid @ModelAttribute Proveedores proveedor, BindingResult result, RedirectAttributes ra) {
+    public String save(@Valid @ModelAttribute("proveedor") Proveedores proveedor, BindingResult result, Model model, RedirectAttributes ra) {
         if (result.hasErrors()) {
-            ra.addFlashAttribute("error", "Verifica los campos obligatorios.");
-            return "redirect:/view/proveedores/form";
+            model.addAttribute("error", "Verifica los campos obligatorios.");
+            return "proveedores/proveedoresForm";
         }
         repo.save(proveedor);
         ra.addFlashAttribute("mensaje", "Proveedor guardado correctamente");

@@ -5,17 +5,20 @@ package com.pharmacore.pharmacore.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 //Primero traemos la tabla de Proveedores
 @Entity
 @Table(name = "proveedores")
-
+@Getter
+@Setter
 public class Proveedores {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_proveedor;
 
-    //NotNull para numeros y NotBlank es para cadenas de texto
+
     @NotBlank(message = "la razon social es obligatoria")
     private String razon_social;
 
@@ -44,11 +47,6 @@ public class Proveedores {
     @NotNull(message = "el estado es obligatorio")
     @Enumerated(EnumType.STRING) // <-- Cámbialo a STRING para que guarde el texto y no un número
     private EstadoProveedor estado;
-
-    public void setId_provedor(Integer id) {
-
-
-    }
 
     //declaramos el esstado como un ENUM
     public enum EstadoProveedor {

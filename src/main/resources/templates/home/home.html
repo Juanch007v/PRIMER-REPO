@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/layout :: styles"></th:block>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCore - Inicio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/img/img.png}">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { pharmacore: { bg:'#F7FAF9', dark:'#004B4B', darker:'#003939', accent:'#006565', text:'#1E1E1E' } }, fontFamily: { sans: ['Poppins','sans-serif'] } } }
+        }
+    </script>
+</head>
+<body class="bg-pharmacore-bg font-sans text-pharmacore-text antialiased min-h-screen flex flex-col selection:bg-pharmacore-accent selection:text-white">
+
+<header th:replace="~{fragments/layout :: topbar('Inicio')}"></header>
+
+<div class="flex flex-1 relative min-h-[calc(100vh-4rem)]">
+    <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 z-10 hidden md:hidden transition-all duration-300"></div>
+    <aside th:replace="~{fragments/layout :: sidebar('home')}"></aside>
+
+    <div class="flex-1 flex flex-col min-w-0 bg-pharmacore-bg">
+        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+
+            <div class="mb-8">
+                <h1 class="text-xl sm:text-2xl font-bold text-pharmacore-dark uppercase tracking-wide">BIENVENIDO A PHARMACORE</h1>
+                <p class="text-xs sm:text-sm text-slate-500">Resumen general del sistema. El panel de control completo con gráficas es un desarrollo pendiente.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1">Productos</p>
+                    <p class="text-3xl font-bold text-pharmacore-dark" th:text="${totalProductos}">0</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1">Clientes</p>
+                    <p class="text-3xl font-bold text-pharmacore-dark" th:text="${totalClientes}">0</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1">Ventas registradas</p>
+                    <p class="text-3xl font-bold text-pharmacore-dark" th:text="${totalVentas}">0</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border p-6"
+                     th:classappend="${lotesVencidos > 0} ? 'border-red-200' : 'border-slate-200'">
+                    <p class="text-xs uppercase tracking-wider font-semibold mb-1" th:classappend="${lotesVencidos > 0} ? 'text-red-600' : 'text-slate-400'">Lotes vencidos</p>
+                    <p class="text-3xl font-bold" th:classappend="${lotesVencidos > 0} ? 'text-red-700' : 'text-pharmacore-dark'" th:text="${lotesVencidos}">0</p>
+                </div>
+            </div>
+
+            <div th:if="${lotesVencidos > 0 or lotesPorVencer > 0}" class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8 flex items-center justify-between">
+                <p class="text-sm text-amber-800">
+                    <span class="font-semibold" th:text="${lotesVencidos}"></span> lote(s) vencido(s) y
+                    <span class="font-semibold" th:text="${lotesPorVencer}"></span> por vencer en los próximos 30 días.
+                </p>
+                <a th:href="@{/view/vencimientos}" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-amber-700 transition-colors whitespace-nowrap">Ver alertas →</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <a th:href="@{/view/ventas/nueva}" class="bg-pharmacore-dark text-white rounded-2xl p-6 hover:bg-pharmacore-accent transition-colors">
+                    <p class="font-bold mb-1">Nueva Venta</p>
+                    <p class="text-xs text-white/70">Registrar una venta en el punto de venta</p>
+                </a>
+                <a th:href="@{/view/ordenes-compra}" class="bg-white border border-slate-200 rounded-2xl p-6 hover:border-pharmacore-accent transition-colors">
+                    <p class="font-bold mb-1 text-pharmacore-dark">Órdenes de Compra</p>
+                    <p class="text-xs text-slate-500">Ver y registrar compras a proveedores</p>
+                </a>
+                <a th:href="@{/view/lotes}" class="bg-white border border-slate-200 rounded-2xl p-6 hover:border-pharmacore-accent transition-colors">
+                    <p class="font-bold mb-1 text-pharmacore-dark">Control de Lotes</p>
+                    <p class="text-xs text-slate-500">Gestionar lotes y vencimientos</p>
+                </a>
+            </div>
+
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

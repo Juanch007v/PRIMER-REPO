@@ -29,7 +29,7 @@ public class ClientesController
     @PutMapping("/{id}")
     public Clientes update(@PathVariable long id, @RequestBody Clientes clientes)
     {
-        clientes.setId_cliente(id); // <--- Corregido de setId_bitacora a setId_cliente
+        clientes.setId_cliente(id);
         return clientesRepository.save(clientes);
     }
 

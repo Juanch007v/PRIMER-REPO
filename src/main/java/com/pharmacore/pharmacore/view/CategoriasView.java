@@ -45,14 +45,14 @@ public class CategoriasView {
 
     // EDITAR
     @GetMapping("/view/categorias/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("categoria", repo.findById(id).orElse(new Categorias()));
         return "categorias/categoriasForm";
     }
 
     // ELIMINAR
     @PostMapping("/view/categorias/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes ra) {
+    public String delete(@PathVariable Long id, RedirectAttributes ra) {
         repo.deleteById(id);
         ra.addFlashAttribute("mensaje", "Categoría eliminada");
         return "redirect:/view/categorias";
