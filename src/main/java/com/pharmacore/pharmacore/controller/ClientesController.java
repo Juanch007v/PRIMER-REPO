@@ -34,7 +34,7 @@ public class ClientesController {
         return clientesRepository.findById(id).orElse(null);
     }
 
-    @PutMapping("/api/{id}")
+    @PutMapping({"/api/{id}", "/{id}"})
     @ResponseBody
     public Clientes update(@PathVariable long id, @RequestBody Clientes clientes) {
         clientes.setId_cliente(id);

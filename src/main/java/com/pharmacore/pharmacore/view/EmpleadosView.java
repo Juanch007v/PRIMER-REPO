@@ -8,10 +8,14 @@ import com.pharmacore.pharmacore.repository.EmpleadosRepository;
 import com.pharmacore.pharmacore.repository.RolesRepository;
 import com.pharmacore.pharmacore.repository.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class EmpleadosView {
@@ -25,10 +29,22 @@ public class EmpleadosView {
     @Autowired
     private UsuariosRepository usuariosRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // LISTA
     @GetMapping("/view/empleados")
     public String lista(Model model) {
-        model.addAttribute("empleados", empleadosRepository.findAll());
+        List<Empleados> empleados = empleadosRepository.findAll();
+
+
+        Map<Long, Usuarios> usuariosPorEmpleado = usuariosRepository.findAll().stream()
+                .filter(u -> u.getIdEmpleado() != null)
+                .collect(Collectors.toMap(Usuarios::getIdEmpleado, u -> u));
+
+        empleados.forEach(e -> e.setUsuario(usuariosPorEmpleado.get(e.getId_empleado())));
+
+        model.addAttribute("empleados", empleados);
         return "empleados/empleados";
     }
 
@@ -101,11 +117,12 @@ public class EmpleadosView {
             usuarioToSave.setUsername(usuarioForm.getUsername());
             usuarioToSave.setEstado(usuarioForm.getEstado());
 
-            // Gestionar contraseña
             if (passwordHash != null && !passwordHash.trim().isEmpty()) {
-                usuarioToSave.setPasswordHash(passwordHash);
+                usuarioToSave.setPasswordHash(passwordEncoder.encode(passwordHash));
             } else if (usuarioToSave.getPasswordHash() == null || usuarioToSave.getPasswordHash().trim().isEmpty()) {
-                usuarioToSave.setPasswordHash("$2a$10$DefaultHashedPasswordPlaceholder"); // Valor por seguridad si está vacía
+
+                ra.addFlashAttribute("error", "Debe asignar una contraseña al usuario (" + usuarioForm.getUsername() + ").");
+                return "redirect:/view/empleados/form";
             }
 
             // Asignar rol
@@ -131,6 +148,9 @@ public class EmpleadosView {
     public String edit(@PathVariable Long id, Model model) {
         Empleados empleado = empleadosRepository.findById(id).orElse(null);
         if (empleado == null) return "redirect:/view/empleados";
+
+        Usuarios usuario = usuariosRepository.findByIdEmpleado(empleado.getId_empleado());
+        empleado.setUsuario(usuario != null ? usuario : new Usuarios());
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("roles", rolesRepository.findAll());

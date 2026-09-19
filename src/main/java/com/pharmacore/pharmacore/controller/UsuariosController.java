@@ -3,6 +3,7 @@ package com.pharmacore.pharmacore.controller;
 import com.pharmacore.pharmacore.model.Usuarios;
 import com.pharmacore.pharmacore.repository.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class UsuariosController {
 
     @Autowired
     private UsuariosRepository usuariosRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<Usuarios> getAll() {
@@ -26,20 +30,24 @@ public class UsuariosController {
 
     @PostMapping
     public Usuarios create(@RequestBody Usuarios usuario) {
+        if (usuario.getPasswordHash() == null || usuario.getPasswordHash().isEmpty()) {
+            throw new IllegalArgumentException("Debe indicar una contraseña para el nuevo usuario.");
+        }
+        usuario.setPasswordHash(passwordEncoder.encode(usuario.getPasswordHash()));
         return usuariosRepository.save(usuario);
     }
 
     @PutMapping("/{id}")
     public Usuarios update(@PathVariable Long id, @RequestBody Usuarios usuario) {
-        // Usamos el setter en camelCase que definimos en la entidad
         usuario.setIdUsuario(id);
 
-        // Verificamos el password usando el nuevo nombre de atributo/getter
         if (usuario.getPasswordHash() == null || usuario.getPasswordHash().isEmpty()) {
             Usuarios existente = usuariosRepository.findById(id).orElse(null);
             if (existente != null) {
                 usuario.setPasswordHash(existente.getPasswordHash());
             }
+        } else {
+            usuario.setPasswordHash(passwordEncoder.encode(usuario.getPasswordHash()));
         }
 
         return usuariosRepository.save(usuario);

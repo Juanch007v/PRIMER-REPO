@@ -3,73 +3,52 @@ package com.pharmacore.pharmacore.controller;
 import com.pharmacore.pharmacore.model.Proveedores;
 import com.pharmacore.pharmacore.repository.ProveedoresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/proveedores")
 public class ProveedoresController {
 
     @Autowired
     private ProveedoresRepository proveedoresRepository;
 
-    // ---------- API REST (JSON) ----------
-
     @GetMapping
-    @ResponseBody
     public List<Proveedores> getAll() {
         return proveedoresRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    public Proveedores getById(@PathVariable Integer id) {
-        return proveedoresRepository.findById(id).orElse(null);
+    public ResponseEntity<Proveedores> getById(@PathVariable Integer id) {
+        return proveedoresRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    @ResponseBody
-    public Proveedores create(@RequestBody Proveedores proveedores) {
-        return proveedoresRepository.save(proveedores);
+    public ResponseEntity<Proveedores> create(@RequestBody Proveedores proveedores) {
+        Proveedores guardado = proveedoresRepository.save(proveedores);
+        return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
     }
 
     @PutMapping("/{id}")
-    @ResponseBody
-    public Proveedores update(@PathVariable Integer id, @RequestBody Proveedores proveedores) {
-        proveedores.setId_provedor(id);
-        return proveedoresRepository.save(proveedores);
+    public ResponseEntity<Proveedores> update(@PathVariable Integer id, @RequestBody Proveedores proveedores) {
+        if (!proveedoresRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        proveedores.setId_proveedor(id);
+        return ResponseEntity.ok(proveedoresRepository.save(proveedores));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        if (!proveedoresRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
         proveedoresRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
-
-
-
-    @GetMapping("/vista")
-    public String lista(Model model) {
-        model.addAttribute("proveedores", proveedoresRepository.findAll());
-        // Asegúrate de que este sea el nombre correcto del archivo proveedores.html
-        return "proveedores/proveedores";
-    }
-
-    @GetMapping("/vista/nuevo")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("proveedor", new Proveedores());
-        // CAMBIADO AQUÍ: ahora apunta a "proveedores.form" que corresponde a proveedoresForm.html
-        return "proveedores/proveedores/form";
-    }
-
-    @PostMapping("/vista/guardar")
-    public String guardar(@ModelAttribute Proveedores proveedor) {
-        proveedoresRepository.save(proveedor);
-        return "redirect:/proveedores/proveedores";
-    }
-
 }
-

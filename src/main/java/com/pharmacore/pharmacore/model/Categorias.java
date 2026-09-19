@@ -25,8 +25,4 @@ public class Categorias
     @NotBlank(message = "la descripcion de la categoria es obligatoria")
     @Column(name = "descripcion", nullable = false, length = 150)
     private String descripcion;
-
-    public void setId(long id) {
-
-    }
 }
